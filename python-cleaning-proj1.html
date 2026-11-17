@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python - Proj 1: Automated Data Hygiene Pipeline | DataAnalyst | HAQmedia 3D</title>
+    <title>Python - Data Cleaning | DataAnalyst | HAQmedia 3D</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PrismJS for Python Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between font-sans">
+
+    <!-- Persistent Top Bar -->
     <header class="w-full px-4 sm:px-6 py-4 flex items-center justify-between border-b border-white/10 backdrop-blur-md bg-slate-950/90 sticky top-0 z-50">
         <div class="flex items-center space-x-2 text-[11px] sm:text-xs overflow-hidden">
             <a href="index.html" class="flex items-center space-x-0.5 flex-shrink-0">
@@ -16,30 +20,146 @@
             <span class="text-slate-600">/</span>
             <a href="dataanalyst.html" class="text-blue-400 hover:underline uppercase flex-shrink-0">DataAnalyst</a>
             <span class="text-slate-600">/</span>
-            <span class="text-white font-mono truncate">Python - Proj 1: Automated Data Hygiene Pipeline</span>
+            <span class="text-white font-mono truncate">Python - Data Cleaning</span>
         </div>
-        <a href="dataanalyst.html" class="text-xs text-slate-400 hover:text-white flex-shrink-0">&larr; Back</a>
+        <a href="dataanalyst.html" class="text-xs text-slate-400 hover:text-white flex-shrink-0">&larr; Back to DataAnalyst</a>
     </header>
 
-    <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10 flex-1 w-full">
-        <span class="text-xs font-mono uppercase tracking-wider bg-blue-950/50 border-blue-500/20 text-blue-300 px-2 py-1 rounded border">DataAnalyst Sub-Project</span>
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-white mt-4 mb-3">Python - Proj 1: Automated Data Hygiene Pipeline</h1>
-        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6">Pandas script testing data types, checking whitespace, and imputing missing student records.</p>
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 py-12 flex-1 w-full">
         
-        <div class="bg-slate-900 border border-white/10 rounded-xl p-4 font-mono text-xs text-blue-400 overflow-x-auto mb-6 shadow-inner">
-            <pre><code>// Python - Proj 1: Automated Data Hygiene Pipeline
-// Architecture, data validation & implementation details
-console.log('HAQmedia 3D - Python - Proj 1: Automated Data Hygiene Pipeline Loaded Successfully');</code></pre>
+        <!-- Header Section -->
+        <div class="mb-10 border-b border-white/10 pb-6">
+            <span class="text-xs font-mono uppercase tracking-wider bg-blue-950/50 border border-blue-500/20 text-blue-300 px-2.5 py-1 rounded">DataAnalyst Python Data Cleaning</span>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-4 mb-3">Python - Data Cleaning</h1>
+            <p class="text-sm text-slate-300 leading-relaxed">
+                This project demonstrates an end-to-end data engineering pipeline using Python and Pandas. It ingests raw student data containing formatting anomalies and missing values, tests data integrity, cleans and standardizes strings and class levels, queries gender performance metrics across class levels, and visualizes the analytical outcomes to answer the question of whether gender is related to marks and does this change with age.
+            </p>
         </div>
 
-        <div class="flex flex-wrap gap-3">
-            <a href="https://github.com" target="_blank" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-lg transition-colors shadow">View on GitHub</a>
-            <a href="dataanalyst.html" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs rounded-lg transition-colors">Back to DataAnalyst</a>
+        <!-- Step 1 & 2: Loading and Integrity Testing -->
+        <section class="mb-10">
+            <h2 class="text-xl font-bold text-blue-400 mb-2">Step 1 & 2: Loading Data & Integrity Testing</h2>
+            <p class="text-xs sm:text-sm text-slate-400 mb-4">
+                We load <code class="text-blue-300">student_toclean.csv</code> and run an automated integrity check function to inspect missing values (nulls), non-string data types, and bounding whitespace issues in name columns.
+            </p>
+            <div class="rounded-xl overflow-hidden border border-white/10 shadow-lg mb-4">
+                <pre class="language-python !bg-slate-900 !m-0 !p-4 text-xs"><code>import pandas as pd
+
+# 1. Load data from the target CSV file
+df = pd.read_csv('student_toclean.csv')
+
+# 2. Define Data Quality Testing Function
+def test_data_integrity(df):
+    print("--- Data Integrity Check ---")
+    print(df.isnull().sum())
+    
+    # Check if names are strings and clean of bounding spaces
+    non_str_names = df['name'].apply(lambda x: not isinstance(x, str) if pd.notnull(x) else False).sum()
+    space_names = df['name'].apply(lambda x: x != x.strip() if isinstance(x, str) else False).sum()
+    print(f"Non-string names: {non_str_names}")
+    print(f"Names with extra spaces: {space_names}")
+
+test_data_integrity(df)</code></pre>
+            </div>
+        </section>
+
+        <!-- Step 3: Cleaning Data & Class Mapping -->
+        <section class="mb-10">
+            <h2 class="text-xl font-bold text-blue-400 mb-2">Step 3: Data Cleaning & Class Mapping</h2>
+            <p class="text-xs sm:text-sm text-slate-400 mb-4">
+                Rows with critical missing values are dropped. Names and gender entries are sanitized by stripping whitespace and standardizing case formats. Word-based classes (e.g., <code class="text-blue-300">'Three'</code>, <code class="text-blue-300">'Four'</code>) and typos like <code class="text-blue-300">'Fifth'</code> are mapped to their numeric integer equivalents.
+            </p>
+            <div class="rounded-xl overflow-hidden border border-white/10 shadow-lg mb-4">
+                <pre class="language-python !bg-slate-900 !m-0 !p-4 text-xs"><code># 3. Clean Data & Replace Word Classes with Integers
+df_clean = df.dropna(subset=['name', 'class', 'mark', 'gender']).copy()
+df_clean['name'] = df_clean['name'].str.strip()
+df_clean['gender'] = df_clean['gender'].str.lower().str.strip()
+
+# Map number words in 'class' to integer equivalents
+word_to_int = {
+    'One': 1, 'Two': 2, 'Three': 3,
+    'Four': 4, 'Five': 5, 'Six': 6,
+    'Seven': 7, 'Eight': 8, 'Nine': 9,
+    'Ten': 10, 'Fifth': 5  # Standardizing typo variation
+}
+df_clean['class_level'] = df_clean['class'].map(word_to_int).astype(int)
+
+print("\nCleaned Sample with Integer Class Levels:")
+print(df_clean[['name', 'class', 'class_level', 'mark', 'gender']].head())</code></pre>
+            </div>
+        </section>
+
+        <!-- Step 4: Querying Performance -->
+        <section class="mb-10">
+            <h2 class="text-xl font-bold text-blue-400 mb-2">Step 4: Querying Performance (Gender vs. Class Level)</h2>
+            <p class="text-xs sm:text-sm text-slate-400 mb-4">
+                To answer whether gender plays a role in student performance and how that changes across class levels, we aggregate marks using Pandas grouped aggregations.
+            </p>
+            <div class="rounded-xl overflow-hidden border border-white/10 shadow-lg mb-4">
+                <pre class="language-python !bg-slate-900 !m-0 !p-4 text-xs"><code># Query performance breakdown across class levels and gender
+performance_query = df_clean.groupby(['class_level', 'gender'])['mark'].agg(['count', 'mean']).unstack()
+print("--- Performance by Class Level and Gender ---")
+print(performance_query)</code></pre>
+            </div>
+        </section>
+
+        <!-- Step 5: Visualizing Trends & Chart Display -->
+        <section class="mb-10">
+            <h2 class="text-xl font-bold text-blue-400 mb-2">Step 5: Visualizing Performance Trends</h2>
+            <p class="text-xs sm:text-sm text-slate-400 mb-4">
+                We use Seaborn and Matplotlib to plot average student marks across class levels grouped by gender, saving the output as an image file.
+            </p>
+            <div class="rounded-xl overflow-hidden border border-white/10 shadow-lg mb-4">
+                <pre class="language-python !bg-slate-900 !m-0 !p-4 text-xs"><code>import matplotlib.pyplot as plt
+import seaborn as sns
+
+sns.set_theme(style="whitegrid")
+plt.figure(figsize=(10, 5))
+
+# Plotting average marks across class levels grouped by gender
+sns.lineplot(
+    data=df_clean, 
+    x='class_level', 
+    y='mark', 
+    hue='gender', 
+    marker='o', 
+    linewidth=2.5, 
+    palette='Set2'
+)
+
+plt.title('Student Performance Trends by Class Level and Gender', fontsize=12, fontweight='bold')
+plt.xlabel('Class Level (Numeric Equivalent)')
+plt.ylabel('Average Mark')
+plt.legend(title='Gender')
+plt.tight_layout()
+plt.savefig('class_gender_performance.png', dpi=300)
+plt.show()</code></pre>
+            </div>
+
+            <!-- Display Generated Graph Inline -->
+            <div class="mt-6 p-4 rounded-xl bg-slate-900 border border-white/10 text-center">
+                <h3 class="text-xs font-mono uppercase text-slate-400 mb-3">Generated Visualization Output</h3>
+                <img src="class_gender_performance.png" alt="Student Performance Trends by Class Level and Gender" class="rounded-lg mx-auto border border-white/10 max-w-full shadow-md" />
+                <p class="text-[11px] text-slate-400 mt-2">Figure 1.1: Trend line comparing average performance across class levels by student gender.</p>
+            </div>
+        </section>
+
+        <!-- Action Links -->
+        <div class="flex flex-wrap gap-3 pt-6 border-t border-white/10">
+            <a href="https://github.com" target="_blank" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-lg transition-colors shadow">View Repository on GitHub</a>
+            <a href="dataanalyst.html" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs rounded-lg transition-colors">&larr; Back to DataAnalyst Overview</a>
         </div>
+
     </main>
 
+    <!-- Footer -->
     <footer class="w-full px-4 py-4 text-center text-xs text-slate-500 border-t border-white/5">
         &copy; 2026 HAQmedia 3D. All rights reserved.
     </footer>
+
+    <!-- PrismJS Syntax Highlighter Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </body>
 </html>
