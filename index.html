@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAQmedia 3D | Professional Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { brand: { black: '#0B0F19', green: '#059669', red: '#dc2626', blue: '#2563eb' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes floatCloud {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            50% { transform: translate(15px, -15px) scale(1.05); opacity: 0.7; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+        }
+        .cloud-word {
+            animation: floatCloud 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-[100dvh] flex flex-col justify-between overflow-x-hidden font-sans">
+
+    <!-- Persistent Top Bar with exact HAQmedia 3D Logo Lockup -->
+    <header class="w-full px-4 sm:px-6 py-4 flex items-center justify-between border-b border-white/10 backdrop-blur-md bg-slate-950/90 sticky top-0 z-50">
+        <div class="flex flex-col items-start">
+            <div class="flex items-center space-x-0.5 shadow-sm">
+                <span class="bg-[#111111] text-white font-black px-2 py-0.5 tracking-wider text-xs border border-white/20">HAQ</span>
+                <span class="bg-white text-black font-semibold px-2 py-0.5 tracking-wider text-xs border border-white/20">media</span>
+            </div>
+            <span class="text-[10px] font-mono tracking-widest text-slate-400 mt-0.5 uppercase">3D · Designer · Developer · Analyst</span>
+        </div>
+        <nav class="flex items-center space-x-2 sm:space-x-4 text-xs font-medium">
+            <a href="designer.html" class="px-2 py-1 rounded bg-emerald-950/40 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-900/50">Designer</a>
+            <a href="developer.html" class="px-2 py-1 rounded bg-red-950/40 text-red-400 border border-red-500/30 hover:bg-red-900/50">Developer</a>
+            <a href="dataanalyst.html" class="px-2 py-1 rounded bg-blue-950/40 text-blue-400 border border-blue-500/30 hover:bg-blue-900/50">Analyst</a>
+        </nav>
+    </header>
+
+    <!-- Main Circular Dial Section with Floating Word Clouds -->
+    <main class="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 text-center">
+        <div class="mb-8 sm:mb-10 max-w-xl mx-auto">
+            <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2 text-white">HAQmedia 3D Portfolio</h1>
+            <p class="text-xs sm:text-sm text-slate-400">Select a core pillar below to explore specialized projects, sub-skills (proj1 & proj2), and codebases.</p>
+        </div>
+
+        <!-- 3-Sector Circular Grid with Drifting Word Clouds -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl w-full">
+            
+            <!-- Designer Sector -->
+            <a href="designer.html" class="group relative p-6 sm:p-8 rounded-2xl bg-slate-900/70 border border-emerald-500/30 hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-center shadow-lg overflow-hidden">
+                <div class="absolute inset-0 pointer-events-none opacity-20 flex flex-wrap items-center justify-center gap-2 p-4">
+                    <span class="cloud-word text-[10px] text-emerald-300 font-mono" style="animation-delay: 0s;">3D Modelling</span>
+                    <span class="cloud-word text-[10px] text-emerald-300 font-mono" style="animation-delay: 1.5s;">Art & Animation</span>
+                    <span class="cloud-word text-[10px] text-emerald-300 font-mono" style="animation-delay: 3s;">Blender</span>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-b from-emerald-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <span class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg mb-4 group-hover:scale-110 transition-transform relative z-10">🎨</span>
+                <h2 class="text-xl font-bold text-emerald-400 mb-1 relative z-10">Designer</h2>
+                <p class="text-xs text-slate-400 relative z-10">3D Modelling, Art, Animation & Proj1/Proj2</p>
+            </a>
+
+            <!-- Developer Sector -->
+            <a href="developer.html" class="group relative p-6 sm:p-8 rounded-2xl bg-slate-900/70 border border-red-500/30 hover:border-red-500 transition-all duration-300 flex flex-col items-center justify-center text-center shadow-lg overflow-hidden">
+                <div class="absolute inset-0 pointer-events-none opacity-20 flex flex-wrap items-center justify-center gap-2 p-4">
+                    <span class="cloud-word text-[10px] text-red-300 font-mono" style="animation-delay: 0.5s;">C# .NET</span>
+                    <span class="cloud-word text-[10px] text-red-300 font-mono" style="animation-delay: 2s;">HTML5 Apps</span>
+                    <span class="cloud-word text-[10px] text-red-300 font-mono" style="animation-delay: 3.5s;">ESP32 IoT</span>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-b from-red-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <span class="w-12 h-12 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center font-bold text-lg mb-4 group-hover:scale-110 transition-transform relative z-10">💻</span>
+                <h2 class="text-xl font-bold text-red-400 mb-1 relative z-10">Developer</h2>
+                <p class="text-xs text-slate-400 relative z-10">C#, HTML5, C++, Arduino & Proj1/Proj2</p>
+            </a>
+
+            <!-- DataAnalyst Sector -->
+            <a href="dataanalyst.html" class="group relative p-6 sm:p-8 rounded-2xl bg-slate-900/70 border border-blue-500/30 hover:border-blue-500 transition-all duration-300 flex flex-col items-center justify-center text-center shadow-lg overflow-hidden">
+                <div class="absolute inset-0 pointer-events-none opacity-20 flex flex-wrap items-center justify-center gap-2 p-4">
+                    <span class="cloud-word text-[10px] text-blue-300 font-mono" style="animation-delay: 1s;">Power BI</span>
+                    <span class="cloud-word text-[10px] text-blue-300 font-mono" style="animation-delay: 2.5s;">Python Pandas</span>
+                    <span class="cloud-word text-[10px] text-blue-300 font-mono" style="animation-delay: 4s;">SQL Queries</span>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-lg mb-4 group-hover:scale-110 transition-transform relative z-10">📊</span>
+                <h2 class="text-xl font-bold text-blue-400 mb-1 relative z-10">DataAnalyst</h2>
+                <p class="text-xs text-slate-400 relative z-10">Power BI, Python, SQL & Proj1/Proj2</p>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full px-4 py-4 text-center text-xs text-slate-500 border-t border-white/5">
+        &copy; 2026 HAQmedia 3D. All rights reserved.
+    </footer>
+
+</body>
+</html>
