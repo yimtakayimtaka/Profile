@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python - Data Cleaning | DataAnalyst | HAQmedia 3D</title>
+    <title>Python - Data Cleaning &amp; Gender Analysis | DataAnalyst | HAQmedia 3D</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- PrismJS for Python Syntax Highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
@@ -20,7 +20,7 @@
             <span class="text-slate-600">/</span>
             <a href="dataanalyst.html" class="text-blue-400 hover:underline uppercase flex-shrink-0">DataAnalyst</a>
             <span class="text-slate-600">/</span>
-            <span class="text-white font-mono truncate">Python - Data Cleaning</span>
+            <span class="text-white font-mono truncate">Python - Data Cleaning &amp; Gender Analysis</span>
         </div>
         <a href="dataanalyst.html" class="text-xs text-slate-400 hover:text-white flex-shrink-0">&larr; Back to DataAnalyst</a>
     </header>
@@ -31,20 +31,24 @@
         <!-- Header Section -->
         <div class="mb-10 border-b border-white/10 pb-6">
             <span class="text-xs font-mono uppercase tracking-wider bg-blue-950/50 border border-blue-500/20 text-blue-300 px-2.5 py-1 rounded">DataAnalyst Python Data Cleaning</span>
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-4 mb-3">Python - Data Cleaning</h1>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-4 mb-3">Python - Data Cleaning &amp; Gender Breakdown (&gt; 80 Marks)</h1>
             <p class="text-sm text-slate-300 leading-relaxed">
-                This project demonstrates an end-to-end data engineering pipeline using Python and Pandas. It ingests raw student data containing formatting anomalies and missing values, tests data integrity, cleans and standardizes strings and class levels, queries gender performance metrics across class levels, and visualizes the analytical outcomes to answer the question of whether gender is related to marks and does this change with age.
+                This project demonstrates an end-to-end data engineering and analysis pipeline using Python, Pandas, and Matplotlib (<code class="text-blue-300">Presentation_Gender_Python.ipynb</code>). It loads <code class="text-blue-300">student_toclean.csv</code>, runs data integrity checks, cleans strings and maps class labels to integer levels, filters students scoring above 80 marks, and visualizes the overall gender split (<code class="text-blue-300">gender_pie.png</code>) alongside per-class male vs. female comparisons (<code class="text-blue-300">gender_bar.png</code>).
             </p>
         </div>
 
         <!-- Step 1 & 2: Loading and Integrity Testing -->
         <section class="mb-10">
-            <h2 class="text-xl font-bold text-blue-400 mb-2">Step 1 & 2: Loading Data & Integrity Testing</h2>
+            <h2 class="text-xl font-bold text-blue-400 mb-2">Step 1 &amp; 2: Loading Data &amp; Integrity Testing</h2>
             <p class="text-xs sm:text-sm text-slate-400 mb-4">
-                We load <code class="text-blue-300">student_toclean.csv</code> and run an automated integrity check function to inspect missing values (nulls), non-string data types, and bounding whitespace issues in name columns.
+                We load <code class="text-blue-300">student_toclean.csv</code> and run <code class="text-blue-300">test_data_integrity(df)</code> to inspect null counts per column, non-string name entries, and leading/trailing spaces in <code class="text-blue-300">name</code>.
             </p>
             <div class="rounded-xl overflow-hidden border border-white/10 shadow-lg mb-4">
-                <pre class="language-python !bg-slate-900 !m-0 !p-4 text-xs"><code>import pandas as pd
+                <pre class="language-python !bg-slate-900 !m-0 !p-4 text-xs"><code># loading data and integrity
+import pandas as pd
+
+from google.colab import files
+uploaded = files.upload()
 
 # 1. Load data from the target CSV file
 df = pd.read_csv('student_toclean.csv')
@@ -52,11 +56,15 @@ df = pd.read_csv('student_toclean.csv')
 # 2. Define Data Quality Testing Function
 def test_data_integrity(df):
     print("--- Data Integrity Check ---")
+    # This checks each column and returns how manu NULL values found in each column
     print(df.isnull().sum())
-    
+
     # Check if names are strings and clean of bounding spaces
+    #ignoring NULLS as we have already checked that above, find count of any non strings in the name column
     non_str_names = df['name'].apply(lambda x: not isinstance(x, str) if pd.notnull(x) else False).sum()
+    #check for leading and trailing spaces only
     space_names = df['name'].apply(lambda x: x != x.strip() if isinstance(x, str) else False).sum()
+    #show what we have found
     print(f"Non-string names: {non_str_names}")
     print(f"Names with extra spaces: {space_names}")
 
@@ -66,82 +74,139 @@ test_data_integrity(df)</code></pre>
 
         <!-- Step 3: Cleaning Data & Class Mapping -->
         <section class="mb-10">
-            <h2 class="text-xl font-bold text-blue-400 mb-2">Step 3: Data Cleaning & Class Mapping</h2>
+            <h2 class="text-xl font-bold text-blue-400 mb-2">Step 3: Data Cleaning &amp; Class Mapping</h2>
             <p class="text-xs sm:text-sm text-slate-400 mb-4">
-                Rows with critical missing values are dropped. Names and gender entries are sanitized by stripping whitespace and standardizing case formats. Word-based classes (e.g., <code class="text-blue-300">'Three'</code>, <code class="text-blue-300">'Four'</code>) and typos like <code class="text-blue-300">'Fifth'</code> are mapped to their numeric integer equivalents.
+                Rows missing critical fields (<code class="text-blue-300">name</code>, <code class="text-blue-300">class</code>, <code class="text-blue-300">mark</code>, <code class="text-blue-300">gender</code>) are dropped into a copy <code class="text-blue-300">df_clean</code>. Whitespace is stripped from names, gender values are normalized to lowercase and trimmed, and word/number class labels are mapped to integer <code class="text-blue-300">class_level</code> values.
             </p>
             <div class="rounded-xl overflow-hidden border border-white/10 shadow-lg mb-4">
-                <pre class="language-python !bg-slate-900 !m-0 !p-4 text-xs"><code># 3. Clean Data & Replace Word Classes with Integers
+                <pre class="language-python !bg-slate-900 !m-0 !p-4 text-xs"><code>#Cleaning
+# 3. Clean Data &amp; Replace Word Classes with Integers
+#if any null was found in columns included in subset then remove that row
+#we create a copy of this new data and leave the original data intact
 df_clean = df.dropna(subset=['name', 'class', 'mark', 'gender']).copy()
+#remove all leading/trailing whitespace only, spaces in the middle are ok
 df_clean['name'] = df_clean['name'].str.strip()
+
+#sets the value to lowercase and removes all leading/trailing whitespace
 df_clean['gender'] = df_clean['gender'].str.lower().str.strip()
 
-# Map number words in 'class' to integer equivalents
+# Normalize class strings first (trim spaces and title-case)
+class_clean = df_clean['class'].astype(str).str.strip().str.capitalize()
+
 word_to_int = {
     'One': 1, 'Two': 2, 'Three': 3,
     'Four': 4, 'Five': 5, 'Six': 6,
     'Seven': 7, 'Eight': 8, 'Nine': 9,
-    'Ten': 10, 'Fifth': 5  # Standardizing typo variation
+    'Ten': 10, 'Fifth': 5,
+    '1': 1, '2': 2, '3': 3, '4': 4, '5': 5,
+    '6': 6, '7': 7, '8': 8, '9': 9, '10': 10
 }
+#convert all word values to their integer equivalent
+#fix some word values such as fifth to 5.
 df_clean['class_level'] = df_clean['class'].map(word_to_int).astype(int)
 
 print("\nCleaned Sample with Integer Class Levels:")
+#show a sample of the values from the start
 print(df_clean[['name', 'class', 'class_level', 'mark', 'gender']].head())</code></pre>
             </div>
         </section>
 
-        <!-- Step 4: Querying Performance -->
+        <!-- Step 4: Querying High Scorers (> 80 Marks) & Overall Gender Pie Chart -->
         <section class="mb-10">
-            <h2 class="text-xl font-bold text-blue-400 mb-2">Step 4: Querying Performance (Gender vs. Class Level)</h2>
+            <h2 class="text-xl font-bold text-blue-400 mb-2">Step 4: Students Scoring &gt; 80 &amp; Overall Gender Breakdown</h2>
             <p class="text-xs sm:text-sm text-slate-400 mb-4">
-                To answer whether gender plays a role in student performance and how that changes across class levels, we aggregate marks using Pandas grouped aggregations.
+                We filter for students scoring strictly above 80 marks (<code class="text-blue-300">mark &gt; 80</code>), compute the total count and gender breakdown, and display the distribution as a pie chart (<code class="text-blue-300">gender_pie.png</code>).
             </p>
             <div class="rounded-xl overflow-hidden border border-white/10 shadow-lg mb-4">
-                <pre class="language-python !bg-slate-900 !m-0 !p-4 text-xs"><code># Query performance breakdown across class levels and gender
-performance_query = df_clean.groupby(['class_level', 'gender'])['mark'].agg(['count', 'mean']).unstack()
-print("--- Performance by Class Level and Gender ---")
-print(performance_query)</code></pre>
-            </div>
-        </section>
+                <pre class="language-python !bg-slate-900 !m-0 !p-4 text-xs"><code># Get everyone who got more than 80 marks
+high_scorers = df_clean[df_clean['mark'] &gt; 80]
 
-        <!-- Step 5: Visualizing Trends & Chart Display -->
-        <section class="mb-10">
-            <h2 class="text-xl font-bold text-blue-400 mb-2">Step 5: Visualizing Performance Trends</h2>
-            <p class="text-xs sm:text-sm text-slate-400 mb-4">
-                We use Seaborn and Matplotlib to plot average student marks across class levels grouped by gender, saving the output as an image file.
-            </p>
-            <div class="rounded-xl overflow-hidden border border-white/10 shadow-lg mb-4">
-                <pre class="language-python !bg-slate-900 !m-0 !p-4 text-xs"><code>import matplotlib.pyplot as plt
-import seaborn as sns
+# Total count of people with mark &gt; 80
+total_over_80 = len(high_scorers)
 
-sns.set_theme(style="whitegrid")
-plt.figure(figsize=(10, 5))
+# Breakdown by gender (male / female)
+gender_breakdown = high_scorers['gender'].value_counts()
 
-# Plotting average marks across class levels grouped by gender
-sns.lineplot(
-    data=df_clean, 
-    x='class_level', 
-    y='mark', 
-    hue='gender', 
-    marker='o', 
-    linewidth=2.5, 
-    palette='Set2'
+print(f"Total people with mark &gt; 80: {total_over_80}")
+print("\nBreakdown by gender:")
+print(gender_breakdown)
+
+#show as a pie chart
+import matplotlib.pyplot as plt
+
+# Format labels with both category name and exact count
+labels = [f"{g.capitalize()} ({cnt})" for g, cnt in gender_breakdown.items()]
+
+fig, ax = plt.subplots(figsize=(6, 6))
+ax.pie(
+    gender_breakdown.values,
+    labels=labels,
+    autopct='%1.1f%%',
+    startangle=90,
+    colors=['#38bdf8', '#60a5fa']
 )
-
-plt.title('Student Performance Trends by Class Level and Gender', fontsize=12, fontweight='bold')
-plt.xlabel('Class Level (Numeric Equivalent)')
-plt.ylabel('Average Mark')
-plt.legend(title='Gender')
+ax.set_title(f"Students with Mark &gt; 80 by Gender (Total: {len(high_scorers)})")
+ax.axis('equal')  # Keep pie circular
 plt.tight_layout()
-plt.savefig('class_gender_performance.png', dpi=300)
 plt.show()</code></pre>
             </div>
 
-            <!-- Display Generated Graph Inline -->
+            <!-- Display Pie Chart Output Inline -->
             <div class="mt-6 p-4 rounded-xl bg-slate-900 border border-white/10 text-center">
-                <h3 class="text-xs font-mono uppercase text-slate-400 mb-3">Generated Visualization Output</h3>
-                <img src="class_gender_performance.png" alt="Student Performance Trends by Class Level and Gender" class="rounded-lg mx-auto border border-white/10 max-w-full shadow-md" />
-                <p class="text-[11px] text-slate-400 mt-2">Figure 1.1: Trend line comparing average performance across class levels by student gender.</p>
+                <h3 class="text-xs font-mono uppercase text-slate-400 mb-3">Overall Gender Breakdown (&gt; 80 Marks)</h3>
+                <img src="gender_pie.png" alt="Students with Mark &gt; 80 by Gender (Total: 79)" class="rounded-lg mx-auto border border-white/10 max-w-full shadow-md" />
+                <p class="text-[11px] text-slate-400 mt-2">Figure 1.1: Pie chart showing students scoring above 80 marks split by gender (Male: 50 / 63.3%, Female: 29 / 36.7%, Total: 79).</p>
+            </div>
+        </section>
+
+        <!-- Step 5: Per-Class Male vs. Female Breakdown Bar Chart -->
+        <section class="mb-10">
+            <h2 class="text-xl font-bold text-blue-400 mb-2">Step 5: Per-Class Gender Breakdown (&gt; 80 Marks)</h2>
+            <p class="text-xs sm:text-sm text-slate-400 mb-4">
+                Next, we group high scorers (<code class="text-blue-300">mark &gt; 80</code>) by <code class="text-blue-300">class_level</code> and <code class="text-blue-300">gender</code> to compare female (<code class="text-blue-300">#f472b6</code>) and male (<code class="text-blue-300">#3b82f6</code>) student counts across each class (<code class="text-blue-300">gender_bar.png</code>).
+            </p>
+            <div class="rounded-xl overflow-hidden border border-white/10 shadow-lg mb-4">
+                <pre class="language-python !bg-slate-900 !m-0 !p-4 text-xs"><code>#get the same data again but for each class
+#import matplotlib.pyplot as plt
+
+# Filter for students scoring strictly over 80
+#high_scorers = df_clean[df_clean['mark'] &gt; 80]
+
+# Count students per class_level broken down by gender (0 if none in a class/gender)
+breakdown = (
+    high_scorers.groupby(['class_level', 'gender'])
+    .size()
+    .unstack(fill_value=0)
+    .sort_index()
+)
+
+# Plot grouped bar chart (using only the gender columns)
+gender_cols = [c for c in ['female', 'male'] if c in breakdown.columns]
+ax = breakdown[gender_cols].plot(
+    kind='bar',
+    figsize=(8, 5),
+    color = ['#f472b6', '#3b82f6'],
+    width=0.7
+)
+
+ax.set_title('Students Scoring &gt; 80 per Class by Gender')
+ax.set_xlabel('Class Level')
+ax.set_ylabel('Number of Students (Mark &gt; 80)')
+ax.set_xticklabels([f"Class {c}" for c in breakdown.index], rotation=0)
+ax.legend(title='Gender', labels=[c.capitalize() for c in gender_cols])
+
+for container in ax.containers:
+    ax.bar_label(container, padding=3)
+
+plt.tight_layout()
+plt.show()</code></pre>
+            </div>
+
+            <!-- Display Bar Chart Output Inline -->
+            <div class="mt-6 p-4 rounded-xl bg-slate-900 border border-white/10 text-center">
+                <h3 class="text-xs font-mono uppercase text-slate-400 mb-3">Per-Class Gender Comparison (&gt; 80 Marks)</h3>
+                <img src="gender_bar.png" alt="Students Scoring &gt; 80 per Class by Gender" class="rounded-lg mx-auto border border-white/10 max-w-full shadow-md" />
+                <p class="text-[11px] text-slate-400 mt-2">Figure 1.2: Grouped bar chart comparing female (pink) and male (blue) students scoring above 80 marks across Class 1 through Class 10.</p>
             </div>
         </section>
 
