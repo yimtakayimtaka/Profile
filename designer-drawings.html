@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawings &amp; Character Art | Designer | HAQmedia 3D</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .paint-reveal-layer {
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            -webkit-mask-image: radial-gradient(circle 85px at var(--mx, 50%) var(--my, 50%), #000 45%, rgba(0,0,0,0.4) 75%, transparent 100%);
+            mask-image: radial-gradient(circle 85px at var(--mx, 50%) var(--my, 50%), #000 45%, rgba(0,0,0,0.4) 75%, transparent 100%);
+        }
+        .paint-card:hover .paint-reveal-layer,
+        .paint-card.is-painting .paint-reveal-layer {
+            opacity: 1;
+        }
+        .paint-card.full-colour .paint-reveal-layer {
+            opacity: 1;
+            -webkit-mask-image: none;
+            mask-image: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between">
+    <header class="w-full px-4 sm:px-6 py-4 flex items-center justify-between border-b border-white/10 backdrop-blur-md bg-slate-950/90 sticky top-0 z-50">
+        <div class="flex items-center space-x-2 text-[11px] sm:text-xs overflow-hidden">
+            <a href="index.html" class="flex items-center space-x-0.5 flex-shrink-0">
+                <span class="bg-[#111111] text-white font-black px-1.5 py-0.5 text-[10px] border border-white/20">HAQ</span>
+                <span class="bg-white text-black font-semibold px-1.5 py-0.5 text-[10px] border border-white/20">media</span>
+            </a>
+            <span class="text-slate-600">/</span>
+            <a href="designer.html" class="text-emerald-400 hover:underline uppercase flex-shrink-0">Designer</a>
+            <span class="text-slate-600">/</span>
+            <span class="text-white font-mono truncate">Drawings &amp; Character Art</span>
+        </div>
+        <a href="designer.html" class="text-xs text-slate-400 hover:text-white flex-shrink-0">&larr; Back</a>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-10 flex-1 w-full">
+        <span class="text-xs font-mono uppercase tracking-wider bg-emerald-950/50 border-emerald-500/20 text-emerald-300 px-2 py-1 rounded border">Designer Sub-Project</span>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white mt-4 mb-2">Drawings &amp; Character Art</h1>
+        <p class="text-xs sm:text-sm text-slate-400 mb-8">Move your cursor (or touch and drag) across the character sheets below to paint them from line art into full colour.</p>
+
+        <!-- Section 1: Interactive Cursor-Paint Character Sheets (1.jpg -> 5.jpg) -->
+        <h2 class="text-sm font-mono uppercase tracking-wider text-emerald-400 font-bold mb-4">Interactive Sketch-to-Colour Characters</h2>
+        <div id="character-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"></div>
+
+        <!-- Section 2: Standalone Illustrations (Matched with ifile.txt + Editable Detail Fields) -->
+        <h2 class="text-sm font-mono uppercase tracking-wider text-emerald-400 font-bold mb-4">Digital Illustrations &amp; Vector Art</h2>
+        <div id="standalone-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"></div>
+
+        <div class="flex flex-wrap gap-3 mt-8">
+            <a href="designer.html" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs rounded-lg transition-colors">&larr; Back to Designer</a>
+        </div>
+    </main>
+
+    <footer class="w-full px-4 py-4 text-center text-xs text-slate-500 border-t border-white/5">
+        &copy; 2026 HAQmedia 3D. All rights reserved.
+    </footer>
+
+    <script>
+        const characterFolders = [
+            { name: 'Bear', folder: 'Bear', details: 'Add character notes or creation details here...' },
+            { name: 'Big Bee', folder: 'BigBee', details: 'Add character notes or creation details here...' },
+            { name: 'Big Bug', folder: 'BigBug', details: 'Add character notes or creation details here...' },
+            { name: 'Blob', folder: 'Blob', details: 'Add character notes or creation details here...' },
+            { name: 'Confused Boy', folder: 'ConfusedBoy', details: 'Add character notes or creation details here...' },
+            { name: 'Forest Boss', folder: 'ForestBoss', details: 'Add character notes or creation details here...' },
+            { name: 'Hero', folder: 'Hero', details: 'Add character notes or creation details here...' },
+            { name: 'Mad Doctor', folder: 'MadDoctor', details: 'Add character notes or creation details here...' },
+            { name: 'Mystery Ninja', folder: 'MysteryNinja', details: 'Add character notes or creation details here...' },
+            { name: 'Samurai Girl', folder: 'SamuraiGirl', details: 'Add character notes or creation details here...' },
+            { name: 'Thug', folder: 'Thug', details: 'Add character notes or creation details here...' },
+            { name: 'Train Boss', folder: 'TrainBoss', details: 'Add character notes or creation details here...' }
+        ];
+
+        // Populated directly from Designer/drawings/ifile.txt where filename matches
+        const standaloneArtworks = [
+            { file: 'mi1_f.jpg', title: '3D Vase Designs', info: 'Designs created to be mapped onto the sides of a 3D vase made in flash', extra: 'Add extra notes here...' },
+            { file: 'mi2_f.jpg', title: 'Wedding DVD menu', info: 'A design created for the menu of a wedding dvd', extra: 'Add extra notes here...' },
+            { file: 'mi4_f.jpg', title: 'Flash Art', info: 'Image created in flash', extra: 'Add extra notes here...' },
+            { file: 'mi6_f.jpg', title: 'YGE image', info: 'Image created using my own custom YGE software', extra: 'Add extra notes here...' },
+            { file: 'mi7_f.jpg', title: 'YGE image', info: 'Image created using my own custom YGE software', extra: 'Add extra notes here...' },
+            { file: 'mi8_f.jpg', title: 'YGE image', info: 'Image created using my own custom YGE software', extra: 'Add extra notes here...' },
+            { file: 'mi9_f.jpg', title: 'YGE image', info: 'Image created using my own custom YGE software', extra: 'Add extra notes here...' },
+            { file: 'mi10_f.jpg', title: 'Flash Art', info: 'Image created in flash', extra: 'Add extra notes here...' },
+            { file: 'mi11_f.jpg', title: 'Flash Art', info: 'Image created in flash', extra: 'Add extra notes here...' },
+            { file: 'Ganda.jpg', title: 'Ganda', info: '', extra: 'Add image details here...' },
+            { file: 'samurai.jpg', title: 'Samurai', info: '', extra: 'Add image details here...' },
+            { file: 'Taka21.jpg', title: 'Taka21', info: '', extra: 'Add image details here...' }
+        ];
+
+        const charGrid = document.getElementById('character-grid');
+        characterFolders.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'bg-slate-900/90 border border-white/10 rounded-xl overflow-hidden flex flex-col shadow-lg';
+            card.innerHTML = `
+                <div class="paint-card relative aspect-square w-full bg-white overflow-hidden cursor-crosshair select-none">
+                    <img src="Designer/drawings/${item.folder}/images/1.jpg" alt="${item.name} line art" class="w-full h-full object-contain pointer-events-none">
+                    <img src="Designer/drawings/${item.folder}/images/5.jpg" alt="${item.name} coloured" class="paint-reveal-layer absolute inset-0 w-full h-full object-contain pointer-events-none">
+                    <span class="absolute top-2 left-2 px-2 py-0.5 rounded bg-slate-950/80 text-[10px] font-mono text-emerald-300 border border-white/10 pointer-events-none">Hover to Paint</span>
+                </div>
+                <div class="p-4 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-1.5">
+                            <h3 class="text-sm font-bold text-white">${item.name}</h3>
+                            <button type="button" class="toggle-colour-btn text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 hover:bg-emerald-600/80 text-slate-300 hover:text-white transition-colors">Reveal All</button>
+                        </div>
+                        <!-- Editable placeholder for your custom image notes -->
+                        <p class="text-xs text-slate-400 border border-dashed border-white/10 rounded p-2 bg-slate-950/50">${item.details}</p>
+                    </div>
+                </div>
+            `;
+
+            const paintBox = card.querySelector('.paint-card');
+            const revealImg = card.querySelector('.paint-reveal-layer');
+            const toggleBtn = card.querySelector('.toggle-colour-btn');
+
+            function updateCoords(clientX, clientY) {
+                const rect = paintBox.getBoundingClientRect();
+                const x = ((clientX - rect.left) / rect.width) * 100;
+                const y = ((clientY - rect.top) / rect.height) * 100;
+                revealImg.style.setProperty('--mx', x.toFixed(1) + '%');
+                revealImg.style.setProperty('--my', y.toFixed(1) + '%');
+            }
+
+            paintBox.addEventListener('mousemove', e => updateCoords(e.clientX, e.clientY));
+            paintBox.addEventListener('touchstart', e => {
+                paintBox.classList.add('is-painting');
+                if (e.touches[0]) updateCoords(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            paintBox.addEventListener('touchmove', e => {
+                if (e.touches[0]) updateCoords(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            paintBox.addEventListener('touchend', () => paintBox.classList.remove('is-painting'));
+
+            toggleBtn.addEventListener('click', () => {
+                const isFull = paintBox.classList.toggle('full-colour');
+                toggleBtn.textContent = isFull ? 'Reset Sketch' : 'Reveal All';
+            });
+
+            charGrid.appendChild(card);
+        });
+
+        const artGrid = document.getElementById('standalone-grid');
+        standaloneArtworks.forEach(art => {
+            const card = document.createElement('div');
+            card.className = 'bg-slate-900/90 border border-white/10 rounded-xl overflow-hidden flex flex-col shadow-lg';
+            card.innerHTML = `
+                <div class="aspect-video w-full bg-black/80 flex items-center justify-center overflow-hidden border-b border-white/10">
+                    <img src="Designer/drawings/${art.file}" alt="${art.title}" class="max-h-full max-w-full object-contain" loading="lazy">
+                </div>
+                <div class="p-4 flex-1 flex flex-col justify-between space-y-2">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-1">
+                            <h3 class="text-sm font-bold text-white">${art.title}</h3>
+                            <span class="text-[10px] font-mono text-slate-500">${art.file}</span>
+                        </div>
+                        ${art.info ? `<p class="text-xs text-emerald-300/90 mb-2">${art.info}</p>` : ''}
+                    </div>
+                    <!-- Editable detail slot for you to fill in later -->
+                    <div class="text-xs text-slate-400 border border-dashed border-white/10 rounded p-2 bg-slate-950/50">
+                        ${art.extra}
+                    </div>
+                </div>
+            `;
+            artGrid.appendChild(card);
+        });
+    </script>
+</body>
+</html>

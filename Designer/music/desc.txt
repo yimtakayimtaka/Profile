@@ -1,0 +1,5 @@
+BattleTheme - this is the music created for the battle music for the game DarkShadow
+BattleTheme2 - This is an alternate version of the battle music created for the game DarkShadow
+TitleMusic - This is the title music to the game DarkShadow
+
+The music was created by imagining the music in my head then I wrote notes on the keyboard and tried to play the music until it sounded like what I wanted, I then wrote down the notes to each section.  I then alter used those notes to compose the music in an audio application and layer the final music.

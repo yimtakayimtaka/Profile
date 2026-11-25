@@ -1,0 +1,12 @@
+The brief was to create a short 90 second animation based on a poem chosen from the supplied material.  My chosen poem was Alley Cat.
+
+Having just finished my YimGameEngine programmed in Visual Basic, i saw this opportunity to show what it was capable of.
+
+The creation and rendering of all images was done in the YimGameEngine. The images were compiled and compressed in Adobe Premiere.
+
+The background music is "Doak Ki Cheung" performed by Sammy Cheung and was also added in Adobe Premiere.
+
+The story tells of a drunk who seems to be wasted, but then is shown to be waiting for something, after seizing their opportunity they strike their target only to fail.  The victim looks down in horror to realise the attacker was their lover whom they were on their way to meet.
+
+This animation was created for a module in univeristy.
+This project is in the process of being transfered into flash so it can be used online.

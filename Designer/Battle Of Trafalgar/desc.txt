@@ -1,0 +1,7 @@
+The brief was to create a short 90 second animation in 3D Studio Max.  We were to model and texture the HMS Victory acurately and animate it accordingly.
+
+The animation shows flowing water, multiple explosions, destructive scenery, flapping flags, bi-pedal characters and much more.
+
+The project used lathing and lofting techniques and a bit of character studio aswell.
+
+This animation was created for a module in univeristy.
