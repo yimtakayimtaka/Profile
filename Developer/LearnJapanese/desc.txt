@@ -1,0 +1,2 @@
+This is an application created in Macromedia flash to aim in learning Japanese.
+The user can select Hiragana or Katakana and they are given a word in the chosen alphabet and they have to type out the correct word using the English alphabet.  The words are made up and are meant to aid in the recognition of the different letters in the hiragana and katakana alphabets.
