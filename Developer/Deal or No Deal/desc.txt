@@ -1,0 +1,7 @@
+This is the flash game version of the TV game Deal or No deal
+
+First you choose a box you wish to keep by pressing Left/Right then Up Array to select.
+
+Then you gradually open the number of required boxes before being given an offer to settle based on the selection of boxes you have left.
+
+Try to beat the banker and leave with more money than what was in your box at the start.
