@@ -1,0 +1,5 @@
+   The concept of Builder is simple.  You are shown a shape and you must build this exact shape using any combination of parts supplied.  The only rules are that you cannot overlap shapes and shapes cannot protrude outside the grid.  Other than that you have complete freedom in how you rotate and place the shapes and in which order.
+   The beauty of Builder is that there are mutiple solutions to each puzzle, so each user can reach the goal in a different way so adding alot of replay value to the game.
+   All level data is loaded in externally so it is easy for me to add new levels and update them.
+
+   Builder was built from the start to be very flexible and to allow all of its files to be externally loaded in.  This means that it would be possible for users to create their own levels and exchange them with other users as Builder also includes a level creator.

@@ -1,0 +1,15 @@
+This was one of my final year projects and it also won the Top Talent Award for Quality in the Austrian Competition PRIX ARS ELECTRONICA 2004.
+
+Created using a fusion of Visual Basic and Flash.  Visual Basic is used to connect to available video input devices and process motion detection algorithms while Flash is used to provide a nice and easy to use interface.
+
+The project allows one to set up a security system using any video input devices connected to their pc and do any of the following upon intrusion:
+   - save images as filmstrip
+   - save images locally
+   - save and upload images to a secure ftp
+   - play any mp3/wma/wav/.avi/mpg
+   - be silent and discreet
+   - timestamp captured images
+
+CamerI also allows fine tuning of its motion detection algorithm so it can be made to ignore small objects e.g. a cat or it cab be made to capture a leaf falling.
+
+CamerI also can work with any video input devices connected to your computer e.g. camcorders or webcams.
