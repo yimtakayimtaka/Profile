@@ -1,0 +1,9 @@
+This was one of my final year projects.  Using Macromedia Director and Flash you use your body as your control pad to navigate through the virtual world and progress through the adventure.
+
+The story is that you are at university and 1 week before your graduation you are called back home.  Knowing that if you miss the graduation you cannot graduate and the fact that you have no money to get back to univeristy you have to devise a plan to get back before the time runs out.
+
+Play multiple fun games to earn money and open new paths of which some might lead you to your goal.  Will you reach your graduation in time?.
+
+The project was originally created in Visual Basic and Flash but it wasn't working fast enough so it was moved to Director and Flash.  I though as both products are created by Macromedia they would work well together, i was wrong.  It was still slow but at this stage i had no choice but to continue.
+
+I have recently developed new faster motion detection algorithms and techniques that will help speed up this process and i hope to implement these newly developed techniques into a new project soon.
