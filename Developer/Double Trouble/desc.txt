@@ -1,0 +1,4 @@
+Double Trouble is a fun and addictive game.  The aim of the game is to collect all the pickups in each level.  You directly control the blue blob and indirectly control the red blob.  Whatever you instruct the blue blob to do, the red blod will do the direct opposite.
+   You must find the quickest way and use the teamwork of both blobs to collect all the pickups in the least amount of steps.
+   A level editor in Visual Basic 6 is used to create the levels in this game.  Currently DoubleTrouble contains 8 levels.
+   DoubleTrouble is still in development and the aim is to have a theme for each level.  So one level might have you play as a mole eating worms while another may have you as a butterfly collecting nectar from flowers.
